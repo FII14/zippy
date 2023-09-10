@@ -1,23 +1,21 @@
 import zipfile
-from tqdm import tqdm
-import os
 
-file_zip = input("Masukkan nama file zip $ ")
-file_wordlist = "wordlist/rockyou txt"
+zip_file_name = input("Enter the zip file name: ")
+wordlist_name = "wordlists/rockyou.txt"
 
-with open(file_zip, "rb") as fz:
-    fz = zipfile.ZipFile(file_zip)
+with open(zip_file_name, "rb") as zip_file:
+    zip_file = zipfile.ZipFile(zip_file_name)
 
-with open(file_wordlist, "r", encoding="latin-1", errors="ignore") as fw:
-    daftar_kata_sandi = fw.readlines()
+with open(wordlist_name, "r", encoding="utf-8", errors="ignore") as wordlist_file:
+    passwords = wordlist_file.readlines()
 
-for kata_sandi in tqdm(daftar_kata_sandi, desc="Progress", ncols=100, ascii=True):
-    kata_sandi = kata_sandi.strip()
+for password in passwords:
+    password = password.strip()
     try:
-        zip_file.extractall(pwd=kata_sandi.encode("latin-1"))
-        print(f"[+] Kata Sandi ditemukan: {kata_sandi}")
+        zip_file.extractall(pwd=password.encode("utf-8"))
+        print(f"Password found: {password}")
         break
     except Exception:
         pass
 else:
-    print("Kata sandi tidak ditemukan di dalam file wordlist.")
+    print("No matching password found.")
